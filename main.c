@@ -4,7 +4,9 @@
 #include "utils.h" // enqueue,dequeue,print_queue, RT_TAT_print
 #include "fifo.h" // function for sort_AT 
 #include "sjf.h" // sorting according to sjf , forming duration 
-#include "stcf.h" 
+#include "stcf.h" // stcf ,stcf_IO 
+#include "rr.h" // RR 
+
 
 process *processes_Q[MAX_PROCESSES]; // Queue stored in main
 int front = -1, rear = -1;
@@ -68,6 +70,35 @@ void stcf_schedule(process **processes){
 
 }
 
+void stcf_io_schedule(process **processes){
+    for (int i = 0; processes[i] != NULL; i++) {
+        enqueue(processes_Q, &front, &rear, processes[i]);  // enqueue all process in processes_Q
+    }
+
+    printf("\n Queue before sorting: \n");
+    print_process(processes_Q);
+
+    sort_AT(processes_Q, rear - front + 1);
+    int* duration=calculate_first_job_duration(processes_Q,rear - front + 1);
+
+    STCF_IO(processes_Q,duration,rear - front + 1);
+
+}
+
+void rr_schedule(process **processes){
+    for (int i = 0; processes[i] != NULL; i++) {
+        enqueue(processes_Q, &front, &rear, processes[i]);  // enqueue all process in processes_Q
+    }
+
+    printf("\n Queue before sorting: \n");
+    print_process(processes_Q);
+
+    sort_AT(processes_Q, rear - front + 1);
+    int* duration=calculate_total_job_duration(processes_Q,rear - front + 1);
+
+    RR(processes_Q,duration,rear - front + 1);
+}
+
 int main() {
     process **processes = parse_jobs("jobs.txt");
     if (processes == NULL) {
@@ -81,7 +112,14 @@ int main() {
     // Call SJF scheduling function
     //sjf_schedule(processes);
     
-    stcf_schedule(processes);
+    //Call STCF function without IO awareness
+    //stcf_schedule(processes);
+
+    //Call STCF function with IO awareness
+    //stcf_io_schedule(processes);
+
+    //Call RR function with IO awareness
+    rr_schedule(processes);
 
     return 0;
 }
