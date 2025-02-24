@@ -1,6 +1,6 @@
 main:
 	gcc -Wall process_creater.c -o pc.out
-	gcc -Wall main.c fifo.c sjf.c stcf.c rr.c parser.c utils.c -o main.out
+	gcc -Wall main.c fifo.c sjf.c stcf.c rr.c mlfq.c parser.c utils.c -o main.out
 
 clean:
 	rm -rf jobs.txt
