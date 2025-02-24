@@ -6,6 +6,7 @@
 #include "sjf.h" // sorting according to sjf , forming duration 
 #include "stcf.h" // stcf ,stcf_IO 
 #include "rr.h" // RR 
+#include "mlfq.h" //mlfq
 
 
 process *processes_Q[MAX_PROCESSES]; // Queue stored in main
@@ -99,6 +100,19 @@ void rr_schedule(process **processes){
     RR(processes_Q,duration,rear - front + 1);
 }
 
+void mlfq(process **processes){
+    for (int i = 0; processes[i] != NULL; i++) {
+        enqueue(processes_Q, &front, &rear, processes[i]);  // enqueue all process in processes_Q
+    }
+
+    printf("\n Queue before sorting: \n");
+    print_process(processes_Q);
+
+    sort_AT(processes_Q, rear - front + 1);
+    mlfq_schedule(processes_Q);
+    
+}
+
 int main() {
     process **processes = parse_jobs("jobs.txt");
     if (processes == NULL) {
@@ -119,9 +133,15 @@ int main() {
     //stcf_io_schedule(processes);
 
     //Call RR function with IO awareness
-    rr_schedule(processes);
+    //rr_schedule(processes);
+
+    //Call MLFQ function 
+    mlfq(processes);
 
     return 0;
 }
+
+
+
 
 
