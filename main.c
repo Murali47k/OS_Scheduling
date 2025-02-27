@@ -80,9 +80,8 @@ void stcf_io_schedule(process **processes){
     print_process(processes_Q);
 
     sort_AT(processes_Q, rear - front + 1);
-    int* duration=calculate_first_job_duration(processes_Q,rear - front + 1);
 
-    STCF_IO(processes_Q,duration,rear - front + 1);
+    STCF_IO(processes_Q,rear - front + 1);
 
 }
 
