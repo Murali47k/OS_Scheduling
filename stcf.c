@@ -63,13 +63,6 @@ void STCF(process **processes,int *duration,int size){
 
 }
 
-int* calculate_first_job_duration(process **processes,int size){// calculates the duartion of first jobs in a process
-    int* job_total_duration=malloc(size * sizeof(int));         // stores it in a array
-    for (int i = 0; processes[i] != NULL; i++){
-        job_total_duration[i]=processes[i]->jobs[0];
-    } 
-    return job_total_duration;
-}
 
 void STCF_IO(process **processes, int size) {
     int timer = 0, finished_count = 0;
